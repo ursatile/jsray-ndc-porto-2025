@@ -11,7 +11,8 @@ export class Ray {
         let shortestDistance = Math.min.apply(Math, distances);
         if (shortestDistance == Infinity) return scene.background;
         let nearestShape = scene.shapes[distances.indexOf(shortestDistance)];
-        return nearestShape.color;
+        let point = this.start.add(this.direction.scale(shortestDistance));
+        return nearestShape.getColorAt(point, scene);
     }
 
     toString = () => `ray: <${this.start.toString()}> => <${this.direction.toString()}>`;
