@@ -53,7 +53,7 @@ function partition(width, height, rows, columns) {
 let runningWorkers = 0;
 function render() {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    let blocks = partition(ctx.canvas.width, ctx.canvas.height, 16, 9);
+    let blocks = partition(ctx.canvas.width, ctx.canvas.height, 8, 3);
     ctx.strokeStyle = "#999";
     blocks.forEach(block => {
         ctx.strokeRect(block.x, block.y, block.width, block.height);

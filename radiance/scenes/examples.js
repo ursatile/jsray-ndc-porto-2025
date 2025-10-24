@@ -5,6 +5,20 @@ import { Box } from '../modules/shapes/box.js';
 import { Light } from '../modules/light.js';
 import { Appearance } from '../modules/appearance.js';
 import { Finish } from '../modules/finish.js';
+import { Chessboard, Chessblock } from '../modules/patterns/chessboard.js';
+
+export function Chessball() {
+    let camera = new Camera(new Vector(0, 4, -8), Vector.O);
+    let background = Color.Black;
+    var chessboard = new Chessboard(Color.Black, Color.White, 0.2);
+    var chessblock = new Chessblock(Color.Black, Color.White, 0.2);
+    let shapes = [
+        new Sphere(new Vector(-1, 0, 0), 0.8, new Appearance(chessboard)),
+        new Sphere(new Vector(1, 0, 0), 0.8, new Appearance(chessblock))
+    ];
+    let lights = [new Light(new Vector(5, 10, -5), Color.White)];
+    return new Scene(camera, background, shapes, lights);
+}
 
 export function EmptySky() {
     let camera = new Camera(new Vector(-4, 1, -5), new Vector(0, 1, 0));
@@ -22,20 +36,29 @@ export function ColoredSpheres() {
         new Sphere(new Vector(-2, 0, 2), 1, new Appearance(Color.Red)),
         new Sphere(new Vector(-4, 0, 4), 1, new Appearance(Color.Yellow)),
     ];
-    let lights = [ new Light(new Vector(5, 10, -5), Color.White) ]; 
+    let lights = [new Light(new Vector(5, 10, -5), Color.White)];
     return new Scene(camera, background, shapes, lights);
 }
 
-export function AssortedShapes(reflection = 0.5) {    
+export function AssortedShapes(reflection = 0.5) {
+    var chessboard = new Chessboard(Color.Black, Color.White, 4);
     let shiny = new Finish({ shiny: 0.5, reflection: reflection });
-    let camera = new Camera(new Vector(-10, 10, -20), new Vector(0, 4, 0));
+    let camera = new Camera(new Vector(-10, 12, -25), new Vector(0, 1, 0));
     let background = new Color(0, 0, 0);
-    let lights = [new Light(new Vector(-30, 25, -12), Color.White)];
+    let lights = [new Light(new Vector(-10, 25, -12), Color.White)];
     let shapes = [
         new Plane(Vector.Y, 0, new Appearance(Color.White)),
         new Box(
-            new Vector(-2, 0, -2), 
-            new Vector(2, 4, 2), 
+            new Vector(-16, 0, -16), 
+            new Vector(16, 0.1, 16), 
+            new Appearance(chessboard)),
+        new Box(
+            new Vector(-17, 0, -17), 
+            new Vector(17, 0.099, 17), 
+            new Appearance(Color.Cyan)),
+            new Box(
+            new Vector(-2, 0, -2),
+            new Vector(2, 4, 2),
             new Appearance(Color.Red, shiny)
         ),
         new Sphere(new Vector(6, 2, 0), 2, new Appearance(Color.Magenta, shiny)),
