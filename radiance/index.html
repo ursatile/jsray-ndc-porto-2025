@@ -5,19 +5,18 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>08: Highlights</title>
+  <title>10: Web Workers</title>
   <link type="text/css" rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <canvas id="my-canvas" width="1280" height="720" style="width: 1280px; height: 720px;"></canvas>
-  <hr />
-  <a href="#shapes" id="render-shapes-demo">shapes demo</a>
-  &bull;
-  <a href="#finish" id="render-finish-demo">finish demo</a>
-  &bull;
-  <a href="#lights" id="render-lights-demo">lights demo</a>
-  <script type="module" src="./main.js"></script>
+  <form>
+    <input type="button" id="render-button" name="renderButton" value="Render" />
+    <input type="button" id="cancel-button" name="cancelButton" value="Cancel" />
+  </form>
+  <script type="module" src="./main.js">
+  </script>
 </body>
 
 </html>

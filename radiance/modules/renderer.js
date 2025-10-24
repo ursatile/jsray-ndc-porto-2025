@@ -13,6 +13,10 @@ class Renderer {
     }
         
     render(scene, callback) {
+        console.log("Rendering:");
+        console.log(`${scene.lights.length} lights`);
+        console.log(`${scene.shapes.length} shapes`);
+        console.log(`Rendering at ${this.#canvasWidth} x ${this.#canvasHeight}`);
         var started = new Date().valueOf();
         for (let pixelY = 0; pixelY < this.#canvasHeight; pixelY++) {
             for (let pixelX = 0; pixelX < this.#canvasWidth; pixelX++) {

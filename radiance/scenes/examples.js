@@ -26,14 +26,18 @@ export function ColoredSpheres() {
     return new Scene(camera, background, shapes, lights);
 }
 
-export function AssortedShapes() {
-    let shiny = new Finish({ shiny: 0.5 });
+export function AssortedShapes(reflection = 0.5) {    
+    let shiny = new Finish({ shiny: 0.5, reflection: reflection });
     let camera = new Camera(new Vector(-10, 10, -20), new Vector(0, 4, 0));
     let background = new Color(0, 0, 0);
     let lights = [new Light(new Vector(-30, 25, -12), Color.White)];
     let shapes = [
         new Plane(Vector.Y, 0, new Appearance(Color.White)),
-        new Box(new Vector(-2, 0, -2), new Vector(2, 4, 2), new Appearance(Color.Red)),
+        new Box(
+            new Vector(-2, 0, -2), 
+            new Vector(2, 4, 2), 
+            new Appearance(Color.Red, shiny)
+        ),
         new Sphere(new Vector(6, 2, 0), 2, new Appearance(Color.Magenta, shiny)),
         new Sphere(new Vector(6, 1, -4), 1, new Appearance(Color.Yellow, shiny)),
         new Sphere(new Vector(-2, 2, 4), 2, new Appearance(Color.Green, shiny)),

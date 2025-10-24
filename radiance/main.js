@@ -1,27 +1,44 @@
-import { Renderer } from './modules/renderer.js';
-import * as ExampleScenes from './scenes/examples.js';
-
 let canvas = document.getElementById('my-canvas');
 let ctx = canvas.getContext('2d');
-let renderer = new Renderer(canvas.width, canvas.height);
+let renderButton = document.getElementById('render-button');
+let cancelButton = document.getElementById('cancel-button');
 
-function paintPixel(x, y, color) {  
-  ctx.fillStyle = color.html;
-  ctx.fillRect(x, y, 1, 1);
+function paintPixel(x, y, color) {
+    var rgb = `rgb(${color.r},${color.g},${color.b})`;
+    ctx.fillStyle = rgb;
+    ctx.fillRect(x, y, 1, 1);
 }
 
-let renderFinishDemo = () => renderer.render(ExampleScenes.AssortedFinishes(), paintPixel);
-let renderLightsDemo = () => renderer.render(ExampleScenes.ColoredLights(), paintPixel);
-let renderShapesDemo = () => renderer.render(ExampleScenes.AssortedShapes(), paintPixel);
-
-document.getElementById('render-finish-demo').addEventListener("click", renderFinishDemo);
-document.getElementById('render-lights-demo').addEventListener("click", renderLightsDemo);
-document.getElementById('render-shapes-demo').addEventListener("click", renderShapesDemo);
-
-switch(window.location.hash) {
-  case "#finish": renderFinishDemo(); break;
-  case "#shapes": renderShapesDemo(); break;
-  default: renderLightsDemo(); break;
+function handleMessageFromWorker(message) {
+    let data = message.data;
+    switch (data.command) {
+        case 'fillRect':
+            let color = { r: data.r, g: data.g, b: data.b };
+            paintPixel(data.x, data.y, color);
+            break;
+        case 'finished':
+            updateStatus(false);
+            break;
+    }
 }
 
+function render() {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    let worker = new Worker('worker.js', { type: 'module' });
+    worker.addEventListener('message', handleMessageFromWorker);
+    cancelButton.addEventListener("click", function () {
+        worker.terminate();
+        updateStatus(false);
+    });
+    worker.postMessage({ command: 'render', width: canvas.width, height: canvas.height });
+    updateStatus(true);
+};
 
+
+function updateStatus(running) {
+    renderButton.disabled = running;
+    cancelButton.disabled = !running;
+}
+
+renderButton.addEventListener("click", render);
+render();

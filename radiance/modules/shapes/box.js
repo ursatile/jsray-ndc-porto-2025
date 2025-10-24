@@ -1,5 +1,3 @@
-// modules/shapes/box.js
-
 import { Shape } from '../shape.js';
 import { THRESHOLD } from '../settings.js';
 import { Vector } from '../vector.js';
