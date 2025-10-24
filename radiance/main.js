@@ -10,5 +10,18 @@ function paintPixel(x, y, color) {
   ctx.fillRect(x, y, 1, 1);
 }
 
-let scene = ExampleScenes.ColoredSpheres();
-renderer.render(scene, paintPixel);
+let renderFinishDemo = () => renderer.render(ExampleScenes.AssortedFinishes(), paintPixel);
+let renderLightsDemo = () => renderer.render(ExampleScenes.ColoredLights(), paintPixel);
+let renderShapesDemo = () => renderer.render(ExampleScenes.AssortedShapes(), paintPixel);
+
+document.getElementById('render-finish-demo').addEventListener("click", renderFinishDemo);
+document.getElementById('render-lights-demo').addEventListener("click", renderLightsDemo);
+document.getElementById('render-shapes-demo').addEventListener("click", renderShapesDemo);
+
+switch(window.location.hash) {
+  case "#finish": renderFinishDemo(); break;
+  case "#shapes": renderShapesDemo(); break;
+  default: renderLightsDemo(); break;
+}
+
+

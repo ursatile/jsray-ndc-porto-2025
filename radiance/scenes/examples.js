@@ -1,10 +1,10 @@
 import { Camera, Scene, Vector, Color } from '../modules/renderer.js';
 import { Sphere } from '../modules/shapes/sphere.js';
-import { Box } from '../modules/shapes/box.js';
 import { Plane } from '../modules/shapes/plane.js';
-
+import { Box } from '../modules/shapes/box.js';
 import { Light } from '../modules/light.js';
 import { Appearance } from '../modules/appearance.js';
+import { Finish } from '../modules/finish.js';
 
 export function EmptySky() {
     let camera = new Camera(new Vector(-4, 1, -5), new Vector(0, 1, 0));
@@ -13,20 +13,93 @@ export function EmptySky() {
 }
 
 export function ColoredSpheres() {
-    let camera = new Camera(new Vector(2, 4, -8), Vector.Z);
-    let background = new Color(100,120,240);
+    let camera = new Camera(new Vector(0, 1, -3), Vector.O);
+    let background = Color.Black;
     let shapes = [
-        new Sphere(new Vector(-4, 1, 4), 1, Color.Yellow),
-        new Sphere(new Vector(-2, 1, 2), 1, Color.Red),
-        // new Sphere(new Vector(+0, 1, 0), 1, Color.White),
-        new Box(new Vector(-1,0,-1), new Vector(1,2,1), Color.Magenta),
-        new Sphere(new Vector(+2, 1, 2), 1, Color.Green),
-        new Sphere(new Vector(+4, 1, 4), 1, Color.Blue),
-        new Plane((Vector.Y), 0, Color.White)
+        new Sphere(Vector.O, 1, new Appearance(Color.White)),
+        new Sphere(new Vector(2, 0, 2), 1, new Appearance(Color.Green)),
+        new Sphere(new Vector(4, 0, 4), 1, new Appearance(Color.Blue)),
+        new Sphere(new Vector(-2, 0, 2), 1, new Appearance(Color.Red)),
+        new Sphere(new Vector(-4, 0, 4), 1, new Appearance(Color.Yellow)),
     ];
-    let lights = [ 
-        new Light(new Vector(5, 10, -5), Color.White),
-        new Light(new Vector(-5, 8, -15), new Color(255,127,50)),
-     ]; 
+    let lights = [ new Light(new Vector(5, 10, -5), Color.White) ]; 
+    return new Scene(camera, background, shapes, lights);
+}
+
+export function AssortedShapes() {
+    let shiny = new Finish({ shiny: 0.5 });
+    let camera = new Camera(new Vector(-10, 10, -20), new Vector(0, 4, 0));
+    let background = new Color(0, 0, 0);
+    let lights = [new Light(new Vector(-30, 25, -12), Color.White)];
+    let shapes = [
+        new Plane(Vector.Y, 0, new Appearance(Color.White)),
+        new Box(new Vector(-2, 0, -2), new Vector(2, 4, 2), new Appearance(Color.Red)),
+        new Sphere(new Vector(6, 2, 0), 2, new Appearance(Color.Magenta, shiny)),
+        new Sphere(new Vector(6, 1, -4), 1, new Appearance(Color.Yellow, shiny)),
+        new Sphere(new Vector(-2, 2, 4), 2, new Appearance(Color.Green, shiny)),
+        new Sphere(new Vector(-4, 4, 10), 4, new Appearance(Color.Blue, shiny)),
+        new Sphere(new Vector(-3.2, 1, -1), 1, new Appearance(Color.Cyan, shiny)),
+    ];
+    return new Scene(camera, background, shapes, lights);
+}
+
+const RADIUS = 1;
+const SPACING = 2.5;
+
+export function AssortedFinishes() {
+    let camera = new Camera(new Vector(0, 20, 0), new Vector(0, 0, 0), 1.6, 0.9);
+    let background = new Color(0, 0, 0);
+    let lights = [new Light(new Vector(10, 20, 20), Color.White)];
+    let color = new Color(120, 180, 240);
+    let shapes = [
+        new Sphere(new Vector(SPACING * -2, 1, SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 1.0, diffuse: 0.0, shiny: 0.0 }))),
+        new Sphere(new Vector(SPACING * -1, 1, SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.7, diffuse: 0.3, shiny: 0.0 }))),
+        new Sphere(new Vector(SPACING * +0, 1, SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.4, diffuse: 0.3, shiny: 0.0 }))),
+        new Sphere(new Vector(SPACING * +1, 1, SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.2, diffuse: 0.6, shiny: 0.0 }))),
+        new Sphere(new Vector(SPACING * +2, 1, SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.0, diffuse: 1.0, shiny: 0.0 }))),
+
+        new Sphere(new Vector(SPACING * -2, 1, 0), RADIUS, new Appearance(color, new Finish({ ambient: 1.0, diffuse: 0.0, shiny: 0.5 }))),
+        new Sphere(new Vector(SPACING * -1, 1, 0), RADIUS, new Appearance(color, new Finish({ ambient: 0.7, diffuse: 0.3, shiny: 0.5 }))),
+        new Sphere(new Vector(SPACING * +0, 1, 0), RADIUS, new Appearance(color, new Finish({ ambient: 0.4, diffuse: 0.3, shiny: 0.5 }))),
+        new Sphere(new Vector(SPACING * +1, 1, 0), RADIUS, new Appearance(color, new Finish({ ambient: 0.2, diffuse: 0.6, shiny: 0.5 }))),
+        new Sphere(new Vector(SPACING * +2, 1, 0), RADIUS, new Appearance(color, new Finish({ ambient: 0.0, diffuse: 1.0, shiny: 0.5 }))),
+
+        new Sphere(new Vector(SPACING * -2, 1, -SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 1.0, diffuse: 0.0, shiny: 1.0 }))),
+        new Sphere(new Vector(SPACING * -1, 1, -SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.7, diffuse: 0.3, shiny: 1.0 }))),
+        new Sphere(new Vector(SPACING * +0, 1, -SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.4, diffuse: 0.3, shiny: 1.0 }))),
+        new Sphere(new Vector(SPACING * +1, 1, -SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.2, diffuse: 0.6, shiny: 1.0 }))),
+        new Sphere(new Vector(SPACING * +2, 1, -SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.0, diffuse: 1.0, shiny: 1.0 }))),
+    ];
+    return new Scene(camera, background, shapes, lights);
+}
+
+export function ColoredLights() {
+    let camera = new Camera(new Vector(0, 20, 0), new Vector(0, 0, 0), 1.6, 0.9);
+    let background = new Color(0, 0, 0);
+    let lights = [
+        new Light(new Vector(-17, 20, 10), new Color(180, 20, 20)),
+        new Light(new Vector(0, 20, -20), new Color(20, 180, 20)),
+        new Light(new Vector(17, 20, 10), new Color(20, 20, 180)),
+    ];
+    let color = new Color(200, 200, 200);
+    let shapes = [
+        new Sphere(new Vector(SPACING * -2, 1, SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 1.0, diffuse: 0.0, shiny: 0.0 }))),
+        new Sphere(new Vector(SPACING * -1, 1, SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.7, diffuse: 0.3, shiny: 0.0 }))),
+        new Sphere(new Vector(SPACING * +0, 1, SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.4, diffuse: 0.3, shiny: 0.0 }))),
+        new Sphere(new Vector(SPACING * +1, 1, SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.2, diffuse: 0.6, shiny: 0.0 }))),
+        new Sphere(new Vector(SPACING * +2, 1, SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.0, diffuse: 1.0, shiny: 0.0 }))),
+
+        new Sphere(new Vector(SPACING * -2, 1, 0), RADIUS, new Appearance(color, new Finish({ ambient: 1.0, diffuse: 0.0, shiny: 0.5 }))),
+        new Sphere(new Vector(SPACING * -1, 1, 0), RADIUS, new Appearance(color, new Finish({ ambient: 0.7, diffuse: 0.3, shiny: 0.5 }))),
+        new Sphere(new Vector(SPACING * +0, 1, 0), RADIUS, new Appearance(color, new Finish({ ambient: 0.4, diffuse: 0.3, shiny: 0.5 }))),
+        new Sphere(new Vector(SPACING * +1, 1, 0), RADIUS, new Appearance(color, new Finish({ ambient: 0.2, diffuse: 0.6, shiny: 0.5 }))),
+        new Sphere(new Vector(SPACING * +2, 1, 0), RADIUS, new Appearance(color, new Finish({ ambient: 0.0, diffuse: 1.0, shiny: 0.5 }))),
+
+        new Sphere(new Vector(SPACING * -2, 1, -SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 1.0, diffuse: 0.0, shiny: 1.0 }))),
+        new Sphere(new Vector(SPACING * -1, 1, -SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.7, diffuse: 0.3, shiny: 1.0 }))),
+        new Sphere(new Vector(SPACING * +0, 1, -SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.4, diffuse: 0.3, shiny: 1.0 }))),
+        new Sphere(new Vector(SPACING * +1, 1, -SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.2, diffuse: 0.6, shiny: 1.0 }))),
+        new Sphere(new Vector(SPACING * +2, 1, -SPACING), RADIUS, new Appearance(color, new Finish({ ambient: 0.0, diffuse: 1.0, shiny: 1.0 }))),
+    ];
     return new Scene(camera, background, shapes, lights);
 }
