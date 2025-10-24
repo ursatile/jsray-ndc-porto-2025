@@ -26,7 +26,7 @@ export function ColoredSpheres() {
     ];
     let lights = [ 
         new Light(new Vector(5, 10, -5), Color.White),
-        // new Light(new Vector(-5, 2, -5), new Color(255,127,50)),
+        new Light(new Vector(-5, 8, -15), new Color(255,127,50)),
      ]; 
     return new Scene(camera, background, shapes, lights);
 }
