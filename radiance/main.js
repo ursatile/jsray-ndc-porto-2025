@@ -12,6 +12,9 @@ function paintPixel(x, y, color) {
 function handleMessageFromWorker(message) {
     let data = message.data;
     switch (data.command) {
+        case 'putImageData':
+            ctx.putImageData(data.imageData, data.x, data.y);
+            break;
         case 'fillRect':
             let color = { r: data.r, g: data.g, b: data.b };
             paintPixel(data.x, data.y, color);
