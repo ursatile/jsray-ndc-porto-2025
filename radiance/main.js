@@ -1,4 +1,5 @@
-import { Renderer, Camera, Scene, Vector, Color } from './modules/renderer.js';
+import { Renderer } from './modules/renderer.js';
+import * as ExampleScenes from './scenes/examples.js';
 
 let canvas = document.getElementById('my-canvas');
 let ctx = canvas.getContext('2d');
@@ -9,7 +10,5 @@ function paintPixel(x, y, color) {
   ctx.fillRect(x, y, 1, 1);
 }
 
-let camera = new Camera(new Vector(-4, 1, -5), Vector.O);
-let background = Color.Yellow;
-let scene = new Scene(camera, background);
+let scene = ExampleScenes.ColoredSpheres();
 renderer.render(scene, paintPixel);

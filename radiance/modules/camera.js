@@ -2,7 +2,7 @@ import { Vector } from './vector.js';
 import { Ray } from './ray.js';
 
 export class Camera {
-    constructor(location, look_at, width = 4, height = 9/4) {
+    constructor(location, look_at, width = 16/8, height = 9/8) {
         this.location = location;
         this.look_at = look_at;
 
@@ -13,7 +13,7 @@ export class Camera {
         }
 
         // Calculate the direction - the vector pointing at the centre of the "frame"
-        this.direction = Vector.from(this.location).to(this.look_at).unit();
+        this.direction = this.look_at.add(this.location.invert()).unit();
 
         //  then work out which way is "right" and "up" relative to the camera
         this.right = Vector.Y.cross(this.direction).unit().scale(width / 2);
