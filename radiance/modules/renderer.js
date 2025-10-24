@@ -4,24 +4,23 @@ import { Camera } from './camera.js';
 import { Scene } from './scene.js';
 
 class Renderer {
-    #canvasWidth;
-    #canvasHeight;
 
     constructor(canvasWidth, canvasHeight) {
-        this.#canvasWidth = canvasWidth;
-        this.#canvasHeight = canvasHeight;
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
     }
         
-    render(scene, callback) {
-        console.log("Rendering:");
-        console.log(`${scene.lights.length} lights`);
-        console.log(`${scene.shapes.length} shapes`);
-        console.log(`Rendering at ${this.#canvasWidth} x ${this.#canvasHeight}`);
-        var started = new Date().valueOf();
-        for (let pixelY = 0; pixelY < this.#canvasHeight; pixelY++) {
-            for (let pixelX = 0; pixelX < this.#canvasWidth; pixelX++) {
-                let sceneX = (pixelX / this.#canvasWidth) - 0.5;
-                let sceneY = (pixelY / this.#canvasHeight) - 0.5;
+    render(scene, callback, block) {
+        let started = new Date().valueOf();
+        let xMin = (block && block.x ? block.x : 0);
+        let xMax = (block && block.width ? xMin + block.width : this.canvasWidth);
+        let yMin = (block && block.y ? block.y : 0);
+        let yMax = (block && block.height ? yMin + block.height: this.canvasHeight);        
+        console.log(`Rendering block (${xMin}, ${yMin}) => (${xMax}, ${yMax})`);
+        for (let pixelY = yMin; pixelY < yMax; pixelY++) {
+            for (let pixelX = xMin; pixelX < xMax; pixelX++) {
+                let sceneX = (pixelX / this.canvasWidth) - 0.5;
+                let sceneY = (pixelY / this.canvasHeight) - 0.5;
                 let pixelColor = scene.trace(sceneX, sceneY);
                 callback(pixelX, pixelY, pixelColor);
             }
